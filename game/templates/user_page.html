@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    {% load static %}
+    <meta charset="utf-8">
+    <title>User page</title>
+    <link rel="stylesheet" href="{% static 'css/side-nav.css' %}">
+    <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+      <script>
+          function loadImage(el) {
+              el.src = "{% static 'img/profile.svg' %}";
+          }
+      </script>
+
+  </head>
+  <body>
+    <div class="sidenav">
+      <div class="user">
+        {% if user.socialaccount_set.all.0.get_avatar_url and "DEFAULT_" in user.user_avatar.url %}
+         <a href="{% url 'game:profile' %}"><img src="{{user.socialaccount_set.all.0.get_avatar_url}}" alt="" width="150" height="150"></a>
+        {% else %}
+          <a href="{% url 'game:profile' %}"><img src="{{user.user_avatar.url}}" alt="" width="150" height="150"></a>
+        {% endif %}
+        <p>{{ user.username }}</p>
+      </div>
+      <div class="options">
+          <a href="{% url 'game:join' %}"><button>Join Room <i class='bx bx-door-open icon'></i></button></a>
+          <a href="{% url 'game:room_creation' %}"><button>Create Room <i class='bx bx-door-open icon'></i></button></a>
+          <a href="{% url 'game:public_rooms' %}"><button>Public Rooms <i class='bx bx-door-open icon'></i></button></a>
+          <a href="{% url 'game:scoreboard' %}"><button>Scoreboard <i class='bx bx-door-open icon'></i></button></a>
+          <a href="{% url 'account_logout' %}"><button>Log out <i class='bx bx-log-out' ></i></button></a>      </div>
+    </div>
+    <div class="rightside">
+      {% block button %}<a href="{% url 'game:profile_change' %}"><button type="button" name="button">Change profile <i class='bx bxs-user' ></i></button></a>{% endblock button %}
+      {% block profile_reset %}
+      {% endblock profile_reset %}
+      {% block password %}<a href="{% url 'game:password_change' %}"><button type="button" name="button">Change password <i class='bx bxs-shield'></i></button></a>{% endblock password %}
+      {% block password_reset %}
+      {% endblock password_reset %}
+    </div>
+  </body>
+</html>
